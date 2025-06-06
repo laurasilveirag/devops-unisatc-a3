@@ -8,6 +8,7 @@
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",
+    "test:e2e": "playwright test",
     "develop": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
@@ -28,6 +29,7 @@
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
