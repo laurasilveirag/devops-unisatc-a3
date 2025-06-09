@@ -2,11 +2,25 @@ name: Testes E2E com Playwright
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
+
+    services:
+      strapi:
+        image: node:18
+        options: >-
+          --health-cmd "curl -f http://localhost:1337 || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 1337:1337
+        volumes:
+          - .:/app
+        command: sh -c "cd /app && pnpm install && pnpm dev"
 
     steps:
       - name: Checkout do código
@@ -25,6 +39,17 @@ jobs:
 
       - name: Instalar navegadores do Playwright
         run: pnpm dlx playwright install
+
+      - name: Aguardar Strapi estar no ar
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:1337/admin | grep -q "Strapi"; then
+              echo "Strapi está no ar!"
+              break
+            fi
+            echo "Aguardando Strapi iniciar..."
+            sleep 5
+          done
 
       - name: Rodar testes
         run: pnpm exec playwright test
