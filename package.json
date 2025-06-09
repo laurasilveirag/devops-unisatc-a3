@@ -8,7 +8,7 @@
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",
-    "test:e2e": "playwright test",
+    "test:e2e": "concurrently -k -s first -n strapi,tests -c yellow,cyan \"pnpm dev\" \"wait-on http://localhost:1337 && pnpm exec playwright test\"",
     "develop": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
@@ -33,7 +33,9 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "typescript": "^5"
+    "concurrently": "^9.1.2",
+    "typescript": "^5",
+    "wait-on": "^8.0.3"
   },
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
