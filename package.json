@@ -8,7 +8,7 @@
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",
-    "test:e2e": "concurrently -k -s first -n strapi,tests -c yellow,cyan \"pnpm dev\" \"wait-on http://localhost:1337 && pnpm exec playwright test\"",
+    "test:e2e": "concurrently -k -s first -n strapi,tests -c yellow,cyan \"pnpm dev\" \"wait-on http://localhost:1337/admin --timeout 30000 && pnpm exec playwright test\"",
     "develop": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
