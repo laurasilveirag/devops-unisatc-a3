@@ -1,0 +1,9 @@
+node_modules
+*.log
+*.sqlite
+pnpm-lock.yaml
+Dockerfile
+.dockerignore
+.cache
+test-results
+coverage
