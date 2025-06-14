@@ -38,5 +38,27 @@ jobs:
           echo "DATABASE_FILENAME=.tmp/data.db" >> .env
           echo "JWT_SECRET=U2Nh9O8oDdw6gzXqWbg5Eg==" >> .env
 
-      - name: Rodar Strapi + Playwright simultaneamente
-        run: pnpm run test:e2e
+      - name: Build do Strapi
+        run: pnpm build
+
+      - name: Iniciar Strapi em background
+        run: |
+          nohup pnpm dev > strapi.log 2>&1 &
+          sleep 10
+
+      - name: Esperar o Strapi subir
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:1337/admin | grep -q "DOCTYPE html"; then
+              echo "Strapi está online"
+              break
+            fi
+            sleep 3
+          done
+
+      - name: Rodar os testes E2E com Playwright
+        run: pnpm dlx playwright test
+
+      - name: Salvar logs em caso de falha
+        if: failure()
+        run: cat strapi.log
