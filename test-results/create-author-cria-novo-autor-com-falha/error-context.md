@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- link "Skip to content":
+  - /url: "#main-content"
+- navigation:
+  - img "Application logo"
+  - text: Strapi DashboardWorkplace
+  - separator
+  - list:
+    - listitem:
+      - link "Home":
+        - /url: /admin
+    - listitem:
+      - link "Content Manager":
+        - /url: /admin/content-manager
+    - listitem:
+      - link "Media Library":
+        - /url: /admin/plugins/upload
+    - listitem:
+      - link "Content-Type Builder":
+        - /url: /admin/plugins/content-type-builder
+    - listitem:
+      - link "Deploy":
+        - /url: /admin/plugins/cloud
+    - listitem:
+      - link "Marketplace":
+        - /url: /admin/marketplace
+    - listitem:
+      - link "Settings":
+        - /url: /admin/settings
+        - text: Settings 1
+  - button "SA Super Admin"
+- main:
+  - heading "Hello Super" [level=1]
+  - paragraph: Welcome to your administration panel
+  - heading "3 steps to get started" [level=2]
+  - text: "1"
+  - heading "🧠 Build the content structure" [level=3]
+  - link "Go to the Content type Builder":
+    - /url: /admin/plugins/content-type-builder
+  - text: "2"
+  - heading "⚡️ What would you like to share with the world?" [level=3]
+  - text: "3"
+  - heading "🚀 See content in action" [level=3]
+  - button "Skip the tour"
+  - region "Last edited entries":
+    - heading "Last edited entries" [level=2]
+    - main:
+      - img
+      - text: No edited entries
+  - region "Last published entries":
+    - heading "Last published entries" [level=2]
+    - main:
+      - img
+      - text: No published entries
+- log
+- status
+- alert
+```

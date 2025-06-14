@@ -1,0 +1,64 @@
+name: Testes E2E com Playwright
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar pnpm
+        run: npm install -g pnpm
+
+      - name: Instalar dependências do projeto
+        run: pnpm install
+
+      - name: Instalar navegadores do Playwright
+        run: pnpm exec playwright install --with-deps
+
+      - name: Criar arquivo .env para o Strapi
+        run: |
+          echo "HOST=0.0.0.0" >> .env
+          echo "PORT=1337" >> .env
+          echo "APP_KEYS=ImJMpHjnCdJw4ii7jZzCXQ==,Jg239VoMach6Fh2LAH6ydA==,LAdmPTwE8oqyVjAV4pCkBQ==,f1gPGngKmE5xhyDktSpCVw==" >> .env
+          echo "API_TOKEN_SALT=X2d0C6rgXwWgwEZCslZN0A==" >> .env
+          echo "ADMIN_JWT_SECRET=deEi8rGl7WB43uXiaYPaOg==" >> .env
+          echo "TRANSFER_TOKEN_SALT=vhsZEWfU3anLONbLZXZfqg==" >> .env
+          echo "DATABASE_CLIENT=sqlite" >> .env
+          echo "DATABASE_FILENAME=.tmp/data.db" >> .env
+          echo "JWT_SECRET=U2Nh9O8oDdw6gzXqWbg5Eg==" >> .env
+
+      - name: Build do Strapi
+        run: pnpm build
+
+      - name: Iniciar Strapi em background
+        run: |
+          nohup pnpm start > strapi.log 2>&1 &
+          sleep 10
+
+      - name: Esperar o Strapi subir
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:1337/admin | grep -q "DOCTYPE html"; then
+              echo "Strapi está online"
+              break
+            fi
+            sleep 3
+          done
+
+      - name: Rodar os testes E2E com Playwright
+        run: pnpm playwright:test
+
+      - name: Salvar logs em caso de falha
+        if: failure()
+        run: cat strapi.log
