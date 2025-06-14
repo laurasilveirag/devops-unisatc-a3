@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 
+//Faz login no STRAPI e cria um novo autor
 test('cria novo autor', async ({ page }) => {
   await page.goto('http://localhost:1337/admin/auth/login');
 
