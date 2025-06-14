@@ -24,7 +24,7 @@ jobs:
         run: pnpm install
 
       - name: Instalar navegadores do Playwright
-        run: pnpm dlx playwright install
+        run: pnpm exec playwright install --with-deps
 
       - name: Criar arquivo .env para o Strapi
         run: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Iniciar Strapi em background
         run: |
-          nohup pnpm dev > strapi.log 2>&1 &
+          nohup pnpm start > strapi.log 2>&1 &
           sleep 10
 
       - name: Esperar o Strapi subir
@@ -57,7 +57,7 @@ jobs:
           done
 
       - name: Rodar os testes E2E com Playwright
-        run: pnpm dlx playwright test
+        run: pnpm playwright:test
 
       - name: Salvar logs em caso de falha
         if: failure()
