@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "strapi_task" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "512"
   memory                   = "1024"
-  network_mode            = "awsvpc"
+  network_mode             = "awsvpc"
 
   container_definitions = jsonencode([
     {
@@ -22,6 +22,44 @@ resource "aws_ecs_task_definition" "strapi_task" {
         {
           containerPort = 1337
           hostPort      = 1337
+        }
+      ]
+      environment = [
+        {
+          name  = "APP_KEYS"
+          value = "ImJMpHjnCdJw4ii7jZzCXQ==,Jg239VoMach6Fh2LAH6ydA==,LAdmPTwE8oqyVjAV4pCkBQ==,f1gPGngKmE5xhyDktSpCVw=="
+        },
+        {
+          name  = "API_TOKEN_SALT"
+          value = "X2d0C6rgXwWgwEZCslZN0A=="
+        },
+        {
+          name  = "ADMIN_JWT_SECRET"
+          value = "deEi8rGl7WB43uXiaYPaOg=="
+        },
+        {
+          name  = "TRANSFER_TOKEN_SALT"
+          value = "vhsZEWfU3anLONbLZXZfqg=="
+        },
+        {
+          name  = "JWT_SECRET"
+          value = "U2Nh9O8oDdw6gzXqWbg5Eg=="
+        },
+        {
+          name  = "DATABASE_CLIENT"
+          value = "sqlite"
+        },
+        {
+          name  = "DATABASE_FILENAME"
+          value = ".tmp/data.db"
+        },
+        {
+          name  = "HOST"
+          value = "0.0.0.0"
+        },
+        {
+          name  = "PORT"
+          value = "1337"
         }
       ]
     }
