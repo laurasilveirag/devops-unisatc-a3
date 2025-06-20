@@ -16,6 +16,7 @@ test('cria novo autor', async ({ page }) => {
   await page.getByRole('link', { name: 'Autor' }).click();
   await page.locator('div').filter({ hasText: /^AutorCreate new entry$/ }).getByRole('link').click();
 
+  //TESTE 
   await page.getByRole('textbox', { name: 'Nome' }).fill('Laurinha');
   await page.getByRole('textbox', { name: 'Email' }).fill('laura@gmail.com');
   await page.getByRole('button', { name: 'Save' }).click();
